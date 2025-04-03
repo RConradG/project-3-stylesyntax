@@ -22,6 +22,15 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,// use .populate() to get outfit details
     ref: 'Outfit',
   }],
+  followers: [{
+    type: mongoose.Schema.Types.ObjectId,// use .populate() to get follower details
+    ref: 'User',
+  }],
+
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,// use .populate() to get following details
+    ref: 'User',
+  }],
   createdAt: {
     type: Date,
     default: Date.now,
