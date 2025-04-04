@@ -1,4 +1,6 @@
-// models/user.js - w/quiz results
+// models/user.js
+//User model with quiz results now reference instead of embedded
+
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -13,36 +15,37 @@ const userSchema = new mongoose.Schema({
   hashedPassword: {
     type: String,
     required: true,
+    //TODO: Install BCRYPT to hash the passwords?
   },
   profileImg: {
     type: String,
     default: '',
   },
   pinnedOutfits: [{
-    type: mongoose.Schema.Types.ObjectId,// use .populate() to get outfit details
+    type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('pinnedOutfits')
     ref: 'Outfit',
   }],
   followers: [{
-    type: mongoose.Schema.Types.ObjectId,// use .populate() to get follower details
+    type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('followers')
     ref: 'User',
+     //TODO: Follower Count?
+     //TODO: How to handle duplicate followers?
   }],
 
   following: [{
-    type: mongoose.Schema.Types.ObjectId,// use .populate() to get following details
+    type: mongoose.Schema.Types.ObjectId,// const user = await User.findById(userId).populate('following');
     ref: 'User',
+    //TODO: Following Count?
   }],
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  //embedded quiz results
-  genderCategory: String,
-  styleProfile: String,
-  lifestyleTags: [String],
-  climateRegion: String,
-  seasonalPrefs: [String],
-  fitPreference: String,
-  quizTakenAt: Date
+  quizResults: {
+    type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('quizResults')
+    ref: 'QuizResults'
+    //TODO: Can the user take multiple quizzes? or just one
+  }
 
 });
 
